@@ -16,7 +16,7 @@ export default function HomePage() {
     try {
       const response = await axios.get('/api/products');
       if (response.data.success) {
-        setProducts(response.data.data.slice(0, 4));
+        setProducts(response.data.data.slice(0, 4)); // Grab top 4 for Trending
       } else {
         setError('Failed to load products.');
       }
@@ -32,10 +32,22 @@ export default function HomePage() {
     fetchProducts();
   }, [fetchProducts]);
 
+  // --- Handlers for Quick Actions (Prevents triggering the card Link) ---
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault(); 
+    console.log("Added to cart from quick action!");
+    // Later, we will add Context API logic here
+  };
+
+  const handleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    console.log("Added to wishlist from quick action!");
+  };
+
   return (
     <main className="pt-20">
       
-      {}
+      {/* HERO SECTION */}
       <section className="relative h-[921px] min-h-[600px] flex items-center overflow-hidden bg-surface">
         <div className="absolute inset-0 bg-gradient-to-br from-surface to-surface-container-high z-0"></div>
         <div className="max-w-screen-2xl mx-auto px-8 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
@@ -68,7 +80,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {}
+      {/* TRUST ELEMENTS BAR */}
       <section className="bg-surface-container-lowest py-12">
         <div className="max-w-screen-2xl mx-auto px-8 grid grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="flex items-center space-x-4">
@@ -110,7 +122,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {}
+      {/* TRENDING PRODUCTS */}
       <section className="py-24 bg-surface-container-low">
         <div className="max-w-screen-2xl mx-auto px-8">
           <div className="text-center mb-16">
@@ -127,37 +139,51 @@ export default function HomePage() {
             <div className="py-20 text-center text-error font-headline">{error}</div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              
+              {/* --- UPDATED PRODUCT CARD --- */}
               {products.map((product) => (
-                <div key={product._id} className="group bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_20px_40px_-10px_rgba(14,22,41,0.05)] transition-all duration-300 hover:-translate-y-2">
+                <Link 
+                  href={`/products/${product._id}`} 
+                  key={product._id} 
+                  className="block group bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_20px_40px_-10px_rgba(14,22,41,0.05)] transition-all duration-300 hover:-translate-y-2"
+                >
                   <div className="relative aspect-[4/5] overflow-hidden bg-white">
                     <img 
                       src={product.thumbnail} 
                       alt={product.title} 
                       className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110 mix-blend-multiply" 
                     />
+                    
                     {product.discountPercentage > 10 && (
-                      <span className="absolute top-4 left-4 bg-primary text-white text-[10px] font-bold uppercase px-2 py-1 rounded-sm">
+                      <span className="absolute top-4 left-4 bg-primary text-white text-[10px] font-bold uppercase px-2 py-1 rounded-sm z-10">
                         {Math.round(product.discountPercentage)}% Off
                       </span>
                     )}
                     
-                    {}
-                    <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-white/40 backdrop-blur-md flex justify-around">
-                      <button className="h-10 w-10 rounded-full bg-white text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+                    {/* Hover Actions: Hidden on mobile (md:flex) to ensure clean tap-to-navigate */}
+                    <div className="hidden md:flex absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-white/40 backdrop-blur-md justify-around z-20">
+                      <button 
+                        onClick={handleAddToCart}
+                        className="h-10 w-10 rounded-full bg-white text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
+                      >
                         <ShoppingCart className="w-5 h-5" />
                       </button>
-                      <button className="h-10 w-10 rounded-full bg-white text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+                      <button 
+                        onClick={handleWishlist}
+                        className="h-10 w-10 rounded-full bg-white text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors"
+                      >
                         <Heart className="w-5 h-5" />
                       </button>
-                      <Link href={`/products/${product._id}`} className="h-10 w-10 rounded-full bg-white text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+                      <div className="h-10 w-10 rounded-full bg-white text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
                         <Eye className="w-5 h-5" />
-                      </Link>
+                      </div>
                     </div>
                   </div>
+                  
                   <div className="p-6 border-t border-surface-container">
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="font-bold text-lg text-primary truncate pr-2">{product.title}</h3>
-                      <div className="flex items-center text-amber-500">
+                      <div className="flex items-center text-amber-500 shrink-0">
                         <Star className="w-3 h-3 fill-current" />
                         <span className="text-xs font-bold ml-1 text-primary">{product.rating}</span>
                       </div>
@@ -167,14 +193,16 @@ export default function HomePage() {
                       <span className="text-xl font-black text-primary">${product.price.toFixed(2)}</span>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
+              {/* --- END UPDATED PRODUCT CARD --- */}
+
             </div>
           )}
         </div>
       </section>
 
-      {}
+      {/* PROMO BANNER */}
       <section className="max-w-screen-2xl mx-auto px-8 my-24">
         <div className="relative h-[500px] rounded-2xl overflow-hidden flex items-center">
           <img 
