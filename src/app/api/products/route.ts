@@ -20,7 +20,7 @@ export async function GET(request: Request) {
 
     if (!products || products.length === 0) {
       return NextResponse.json(
-        { success: false, message: 'No products found in this category' },
+        { success: false, message: 'No products found' },
         { status: 404 }
       );
     }
@@ -34,6 +34,52 @@ export async function GET(request: Request) {
     console.error('Error fetching products:', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(request: Request) {
+  await dbConnect();
+
+  try {
+    const body = await request.json();
+
+    if (!body.title || !body.price || !body.category) {
+      return NextResponse.json(
+        { success: false, message: 'Title, price, and category are required fields.' },
+        { status: 400 }
+      );
+    }
+
+    const productData = {
+      ...body,
+      id: Date.now(),
+      stock: body.stock || 0,
+      rating: body.rating || 0,
+      images: body.images || [body.thumbnail],
+      reviews: body.reviews || [],
+    };
+
+    const newProduct = await ProductModel.create(productData);
+
+    return NextResponse.json(
+      { success: true, message: 'Product successfully added to inventory', data: newProduct },
+      { status: 201 }
+    );
+
+  } catch (error: any) {
+    console.error('Error creating product:', error);
+    
+    if (error.name === 'ValidationError') {
+      return NextResponse.json(
+        { success: false, message: error.message },
+        { status: 400 }
+      );
+    }
+
+    return NextResponse.json(
+      { success: false, message: 'Internal server error while creating product' },
       { status: 500 }
     );
   }

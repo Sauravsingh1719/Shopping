@@ -31,6 +31,7 @@ export default function Navbar() {
     { name: "Fragrances", href: "/category/fragrances" },
     { name: "Furniture", href: "/category/furniture" },
     { name: "Laptops", href: "/category/laptops" },
+    { name: "Mobile ", href: "/category/mobile" },
   ];
 
   return (
