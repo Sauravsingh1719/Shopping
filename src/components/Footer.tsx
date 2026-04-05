@@ -65,6 +65,12 @@ export default function Footer() {
           <Link href="#" className="text-primary/80 hover:text-primary transition-colors"><Radio className="w-5 h-5" /></Link>
         </div>
       </div>
+          <div className="flex justify-center text-center">
+            Made by Saurav:
+            <span className="text-red-600 ml-2">
+              <Link href="https://saurav190.vercel.app/">Portfolio</Link>
+            </span>
+          </div>
     </footer>
   );
 }
