@@ -5,10 +5,19 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Heart, ShoppingBag, User, ShieldCheck, Menu, X } from "lucide-react";
 
+import { useStore } from "@/store/useStore"; 
+
+
+
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { cart, wishlist, toggleCart } = useStore((state) => state);
+  const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
+  const [isMounted, setIsMounted] = useState(false);
+  
   useEffect(() => {
+    setIsMounted(true);
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -18,24 +27,21 @@ export default function Navbar() {
   }, [isMobileMenuOpen]);
 
   const navLinks = [
-    { name: "Electronics", href: "/electronics" },
-    { name: "Fashion", href: "/fashion" },
-    { name: "Beauty", href: "/beauty" },
-    { name: "Home Essentials", href: "/home" },
+    { name: "Beauty", href: "/category/beauty" },
+    { name: "Fragrances", href: "/category/fragrances" },
+    { name: "Furniture", href: "/category/furniture" },
+    { name: "Laptops", href: "/category/laptops" },
   ];
 
   return (
     <>
-      {}
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.05)]">
         <div className="flex justify-between items-center px-4 md:px-8 h-16 md:h-20 w-full max-w-[1440px] mx-auto">
           
-          {}
           <Link href="/" className="text-xl md:text-2xl font-bold tracking-tighter text-neutral-900 font-headline z-50">
             ATELIER
           </Link>
 
-          {}
           <div className="hidden md:flex space-x-8 items-center">
             {navLinks.map((link, index) => (
               <Link 
@@ -52,10 +58,8 @@ export default function Navbar() {
             ))}
           </div>
 
-          {}
           <div className="flex items-center gap-4 md:gap-6 z-50">
             
-            {}
             <div className="hidden lg:flex items-center bg-surface-container-highest px-4 py-2 rounded-full w-64">
               <Search className="text-on-surface-variant w-4 h-4" />
               <input 
@@ -67,15 +71,24 @@ export default function Navbar() {
 
             {}
             <div className="hidden sm:flex items-center gap-4 text-neutral-800">
-              <button className="hover:opacity-70 transition-opacity duration-300">
+              {}
+              <button className="hover:opacity-70 transition-opacity duration-300 relative">
                 <Heart className="w-5 h-5" strokeWidth={1.5} />
+                {isMounted && wishlist.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-tertiary text-on-tertiary text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                    {wishlist.length}
+                  </span>
+                )}
               </button>
               
+              {}
               <button className="hover:opacity-70 transition-opacity duration-300 relative">
-                <ShoppingBag className="w-5 h-5" strokeWidth={1.5} />
-                <span className="absolute -top-1 -right-1 bg-tertiary text-on-tertiary text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-                  2
-                </span>
+                <ShoppingBag onClick={toggleCart} className="w-5 h-5" strokeWidth={1.5} />
+                {isMounted && cartItemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                    {cartItemCount}
+                  </span>
+                )}
               </button>
               
               <button className="hover:opacity-70 transition-opacity duration-300">
@@ -85,13 +98,14 @@ export default function Navbar() {
 
             {}
             <button className="sm:hidden hover:opacity-70 transition-opacity duration-300 relative text-neutral-800">
-              <ShoppingBag className="w-5 h-5" strokeWidth={1.5} />
-              <span className="absolute -top-1 -right-1 bg-tertiary text-on-tertiary text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
-                2
-              </span>
+              <ShoppingBag onClick={toggleCart} className="w-5 h-5" strokeWidth={1.5} />
+              {isMounted && cartItemCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                  {cartItemCount}
+                </span>
+              )}
             </button>
 
-            {}
             <button 
               className="md:hidden text-neutral-900 hover:opacity-70 transition-opacity"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -107,7 +121,6 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -117,7 +130,6 @@ export default function Navbar() {
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-40 bg-surface/95 backdrop-blur-2xl flex flex-col pt-24 px-8 md:hidden"
           >
-            {}
             <div className="flex items-center bg-white px-4 py-3 rounded-xl w-full mb-8 shadow-sm">
               <Search className="text-on-surface-variant w-5 h-5" />
               <input 
@@ -127,7 +139,6 @@ export default function Navbar() {
               />
             </div>
 
-            {}
             <div className="flex flex-col space-y-6">
               {navLinks.map((link, i) => (
                 <motion.div
@@ -147,10 +158,15 @@ export default function Navbar() {
               ))}
             </div>
 
-            {}
             <div className="mt-auto pb-12 flex justify-between items-center text-neutral-500 border-t border-neutral-200 pt-6">
-              <button className="flex flex-col items-center gap-1 hover:text-neutral-900">
+              <button className="flex flex-col items-center gap-1 hover:text-neutral-900 relative">
                 <Heart className="w-6 h-6" strokeWidth={1.5} />
+                {}
+                {isMounted && wishlist.length > 0 && (
+                  <span className="absolute -top-1 -right-2 bg-tertiary text-on-tertiary text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                    {wishlist.length}
+                  </span>
+                )}
                 <span className="text-xs font-medium font-body uppercase tracking-wider">Wishlist</span>
               </button>
               <button className="flex flex-col items-center gap-1 hover:text-neutral-900">

@@ -16,7 +16,7 @@ export default function HomePage() {
     try {
       const response = await axios.get('/api/products');
       if (response.data.success) {
-        setProducts(response.data.data.slice(0, 4)); // Grab top 4 for Trending
+        setProducts(response.data.data.slice(0, 4));
       } else {
         setError('Failed to load products.');
       }
@@ -32,11 +32,9 @@ export default function HomePage() {
     fetchProducts();
   }, [fetchProducts]);
 
-  // --- Handlers for Quick Actions (Prevents triggering the card Link) ---
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault(); 
     console.log("Added to cart from quick action!");
-    // Later, we will add Context API logic here
   };
 
   const handleWishlist = (e: React.MouseEvent) => {
@@ -47,20 +45,29 @@ export default function HomePage() {
   return (
     <main className="pt-20">
       
-      {/* HERO SECTION */}
-      <section className="relative h-[921px] min-h-[600px] flex items-center overflow-hidden bg-surface">
+      {}
+      <section className="relative lg:h-[921px] min-h-[600px] flex items-center overflow-hidden bg-surface py-20 lg:py-0">
         <div className="absolute inset-0 bg-gradient-to-br from-surface to-surface-container-high z-0"></div>
         <div className="max-w-screen-2xl mx-auto px-8 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+          
           <div className="max-w-xl">
-            <span className="inline-block px-3 py-1 bg-secondary-container text-on-secondary-container text-xs font-bold uppercase tracking-widest mb-6 rounded-sm">AW 2024 Collection</span>
+            {}
+            <span className="inline-block px-3 py-1 bg-primary-container text-on-primary text-xs font-bold uppercase tracking-widest mb-6 rounded-sm">
+              2026 Collection
+            </span>
+            
             <h1 className="text-6xl md:text-8xl font-bold tracking-tighter font-headline text-primary leading-[0.9] mb-8">
-              Modern <br/>Elegance <br/><span className="text-on-primary-container">For Every Day</span>
+              {}
+              Modern <br/>Elegance <br/><span className="text-primary/70">For Every Day</span>
             </h1>
-            <p className="text-lg text-secondary mb-10 max-w-md leading-relaxed">
+            
+            {}
+            <p className="text-lg text-primary/80 font-medium mb-10 max-w-md leading-relaxed">
               Experience a curated collection where heritage craftsmanship meets contemporary silhouettes. Designed for the discerning individual.
             </p>
-            <div className="flex items-center space-x-6">
-              <button className="bg-gradient-to-br from-primary to-primary-container text-on-primary px-10 py-5 rounded-lg font-bold text-sm uppercase tracking-widest hover:scale-105 transition-transform duration-300 shadow-xl shadow-primary/20">
+            
+            <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
+              <button className="w-full sm:w-auto bg-gradient-to-br from-primary to-primary-container text-on-primary px-10 py-5 rounded-lg font-bold text-sm uppercase tracking-widest hover:scale-105 transition-transform duration-300 shadow-xl shadow-primary/20">
                 Shop Now
               </button>
               <button className="text-primary font-bold text-sm uppercase tracking-widest group flex items-center">
@@ -69,18 +76,20 @@ export default function HomePage() {
               </button>
             </div>
           </div>
-          <div className="relative hidden lg:block h-full">
-            <div className="absolute -right-20 top-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-surface-container-lowest rounded-full blur-3xl opacity-50"></div>
+          
+          <div className="relative w-full h-[400px] lg:h-[700px]">
+            <div className="hidden lg:block absolute -right-20 top-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-surface-container-lowest rounded-full blur-3xl opacity-50"></div>
             <img 
               src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200&auto=format&fit=crop" 
               alt="Fashion photography" 
-              className="relative z-10 w-full h-[700px] object-cover rounded-xl shadow-2xl hover:scale-[1.02] transition-transform duration-700" 
+              className="relative z-10 w-full h-full object-cover rounded-xl shadow-2xl hover:scale-[1.02] transition-transform duration-700" 
             />
           </div>
+
         </div>
       </section>
 
-      {/* TRUST ELEMENTS BAR */}
+      {}
       <section className="bg-surface-container-lowest py-12">
         <div className="max-w-screen-2xl mx-auto px-8 grid grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="flex items-center space-x-4">
@@ -122,7 +131,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* TRENDING PRODUCTS */}
+      {}
       <section className="py-24 bg-surface-container-low">
         <div className="max-w-screen-2xl mx-auto px-8">
           <div className="text-center mb-16">
@@ -140,7 +149,7 @@ export default function HomePage() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               
-              {/* --- UPDATED PRODUCT CARD --- */}
+              {}
               {products.map((product) => (
                 <Link 
                   href={`/products/${product._id}`} 
@@ -160,7 +169,7 @@ export default function HomePage() {
                       </span>
                     )}
                     
-                    {/* Hover Actions: Hidden on mobile (md:flex) to ensure clean tap-to-navigate */}
+                    {}
                     <div className="hidden md:flex absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-white/40 backdrop-blur-md justify-around z-20">
                       <button 
                         onClick={handleAddToCart}
@@ -195,14 +204,14 @@ export default function HomePage() {
                   </div>
                 </Link>
               ))}
-              {/* --- END UPDATED PRODUCT CARD --- */}
+              {}
 
             </div>
           )}
         </div>
       </section>
 
-      {/* PROMO BANNER */}
+      {}
       <section className="max-w-screen-2xl mx-auto px-8 my-24">
         <div className="relative h-[500px] rounded-2xl overflow-hidden flex items-center">
           <img 

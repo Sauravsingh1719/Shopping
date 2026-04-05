@@ -1,11 +1,10 @@
-// tailwind.config.ts
 import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages*.{js,ts,jsx,tsx,mdx}",
+    "./components*.{js,ts,jsx,tsx,mdx}",
+    "./app*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
@@ -13,7 +12,11 @@ const config: Config = {
         "outline-variant": "#c2c7ca",
         "primary": "#0e1629",
         "tertiary-fixed": "#ffdbc8",
-        "on-primary-container": "#8a92aa",
+        
+        "secondary": "#334155",
+        "on-surface-variant": "#334155",
+        "on-primary-container": "#1e293b",
+
         "inverse-primary": "#bec6e0",
         "primary-fixed-dim": "#bec6e0",
         "primary-container": "#232b3f",
@@ -28,7 +31,6 @@ const config: Config = {
         "outline": "#73787a",
         "surface-variant": "#e0e3e5",
         "on-surface": "#191c1e",
-        "secondary": "#505f76",
         "tertiary": "#251206",
         "on-error-container": "#93000a",
         "on-tertiary-fixed": "#2a170a",
@@ -42,7 +44,6 @@ const config: Config = {
         "on-error": "#ffffff",
         "error-container": "#ffdad6",
         "surface-container-lowest": "#ffffff",
-        "on-surface-variant": "#42484a",
         "on-primary-fixed": "#131b2e",
         "on-secondary": "#ffffff",
         "inverse-on-surface": "#eff1f3",
